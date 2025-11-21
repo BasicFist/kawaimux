@@ -1,0 +1,500 @@
+#!/usr/bin/env python3
+"""
+🎀 Kawaii TUI Main Entry Point
+Hello Kitty AI Collaboration Manager - Main executable
+"""
+
+import sys
+import os
+import argparse
+from pathlib import Path
+
+# Add lib directory to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'lib'))
+
+try:
+    from utils import kawaii_print, print_kawaii_banner, kawaii_farewell, validate_kawaii_environment, logger
+    from theme import KawaiiThemeManager
+    from ai_modes import KawaiiAIModes, CollaborationMode
+    from session_manager import KawaiiSessionManager, SessionType
+    from knowledge_base import KawaiiKnowledgeBase, KnowledgeType
+    from workflow_templates import KawaiiWorkflowTemplates, WorkflowType
+    from plugin_manager import KawaiiPluginManager, PluginType
+except ImportError as e:
+    print(f"❌ Error importing kawaii modules: {e}")
+    print("Make sure all dependencies are installed correctly.")
+    sys.exit(1)
+
+
+def main():
+    """Main entry point for Kawaii TUI"""
+    parser = argparse.ArgumentParser(
+        description="🎀 Hello Kitty AI Collaboration Manager",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+🎀 Kawaii Examples:
+  %(prog)s                    # Launch interactive TUI
+  %(prog)s --mode pair        # Start pair programming session
+  %(prog)s --theme classic    # Apply classic Hello Kitty theme
+  %(prog)s --health           # Run system health check
+  %(prog)s --demo             # Run demonstration mode
+
+💖 Enjoy maximum cuteness with productivity! (òωó)
+        """
+    )
+    
+    parser.add_argument('--mode', '-m', 
+                       choices=['pair', 'debate', 'teaching', 'consensus', 'competition'],
+                       help='Start specific AI collaboration mode')
+    
+    parser.add_argument('--theme', '-t',
+                       choices=['classic', 'pastel', 'starry', 'rainbow', 'minimal', 'neon'],
+                       help='Apply specific Hello Kitty theme')
+    
+    parser.add_argument('--session', '-s',
+                       help='Session name for collaboration')
+    
+    parser.add_argument('--agents', '-a',
+                       type=int, default=2,
+                       help='Number of AI agents (default: 2)')
+    
+    parser.add_argument('--duration', '-d',
+                       type=float, default=2.0,
+                       help='Duration in hours (default: 2.0)')
+    
+    parser.add_argument('--health', '-h',
+                       action='store_true',
+                       help='Run system health check')
+    
+    parser.add_argument('--demo',
+                       action='store_true',
+                       help='Run demonstration mode')
+    
+    parser.add_argument('--list', '-l',
+                       choices=['themes', 'modes', 'templates', 'plugins', 'sessions'],
+                       help='List available items')
+    
+    parser.add_argument('--config',
+                       help='Custom configuration file')
+    
+    parser.add_argument('--verbose', '-v',
+                       action='store_true',
+                       help='Verbose output')
+    
+    parser.add_argument('--version',
+                       action='version',
+                       version='🎀 Kawaii TUI v1.0.0 (Hello Kitty Edition)')
+    
+    args = parser.parse_args()
+    
+    # Print kawaii banner
+    print_kawaii_banner()
+    
+    # Validate environment
+    if not validate_environment():
+        print("❌ Environment validation failed. Please fix the issues above.")
+        return 1
+    
+    try:
+        # Handle different command modes
+        if args.demo:
+            return run_demo()
+        elif args.health:
+            return run_health_check()
+        elif args.list:
+            return run_list_command(args.list)
+        elif args.mode:
+            return run_collaboration_mode(args)
+        elif args.theme:
+            return run_theme_command(args)
+        else:
+            # Default: launch interactive TUI
+            return run_interactive_tui()
+    
+    except KeyboardInterrupt:
+        print("\n")
+        kawaii_farewell()
+        return 0
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        print(f"❌ Unexpected error: {e}")
+        return 1
+
+
+def validate_environment():
+    """Validate that the environment is ready for kawaii operations"""
+    logger.info("Validating kawaii environment", 'cute')
+    
+    valid, issues = validate_kawaii_environment()
+    
+    if valid:
+        logger.success("Environment validation passed", 'success')
+        print("✅ Kawaii environment validated successfully!")
+        print("💖 Ready for maximum cuteness! (òωó)")
+        return True
+    else:
+        logger.error("Environment validation failed", 'error')
+        print("❌ Environment validation failed:")
+        for issue in issues:
+            print(f"  • {issue}")
+        print("\n🎀 Please fix these issues to enjoy full kawaii experience!")
+        return False
+
+
+def run_interactive_tui():
+    """Launch the interactive TUI"""
+    logger.info("Launching interactive Kawaii TUI", 'excited')
+    print("\n🎀 Launching interactive Kawaii TUI...")
+    print("(òωó) Loading maximum cuteness...")
+    
+    try:
+        # Import and run the main TUI application
+        import subprocess
+        result = subprocess.run([
+            sys.executable, 
+            os.path.join(os.path.dirname(__file__), 'bin', 'kawaii_tui.py')
+        ])
+        return result.returncode
+        
+    except Exception as e:
+        logger.error(f"Failed to launch interactive TUI: {e}", 'error')
+        print(f"❌ Failed to launch interactive TUI: {e}")
+        print("🎀 You can try running the TUI manually:")
+        print(f"  python3 {os.path.join(os.path.dirname(__file__), 'bin', 'kawaii_tui.py')}")
+        return 1
+
+
+def run_demo():
+    """Run demonstration mode"""
+    logger.info("Running Kawaii TUI demo", 'excited')
+    print("\n🎭 Kawaii TUI Demonstration Mode")
+    print("=" * 50)
+    
+    try:
+        # Import demo functions
+        from ai_modes import demo_kawaii_ai_modes
+        from session_manager import demo_kawaii_session_manager
+        from knowledge_base import demo_kawaii_knowledge_base
+        from workflow_templates import demo_kawaii_workflow_templates
+        from plugin_manager import demo_kawaii_plugin_manager
+        from theme import demo_kawaii_theme_system
+        from utils import demo_kawaii_utils
+        
+        # Run all demos
+        print("\n🎀 AI Collaboration Modes Demo:")
+        demo_kawaii_ai_modes()
+        
+        print("\n🖥️ Session Manager Demo:")
+        demo_kawaii_session_manager()
+        
+        print("\n📚 Knowledge Base Demo:")
+        demo_kawaii_knowledge_base()
+        
+        print("\n🎭 Workflow Templates Demo:")
+        demo_kawaii_workflow_templates()
+        
+        print("\n🔌 Plugin Manager Demo:")
+        demo_kawaii_plugin_manager()
+        
+        print("\n🎨 Theme System Demo:")
+        demo_kawaii_theme_system()
+        
+        print("\n🛠️ Utils Demo:")
+        demo_kawaii_utils()
+        
+        print("\n🎉 Demo completed! All kawaii systems are working perfectly! (òωó)")
+        logger.success("Demo completed successfully", 'celebration')
+        return 0
+        
+    except Exception as e:
+        logger.error(f"Demo failed: {e}", 'error')
+        print(f"❌ Demo failed: {e}")
+        return 1
+
+
+def run_health_check():
+    """Run system health check"""
+    logger.info("Running system health check", 'thinking')
+    print("\n🏥 Kawaii System Health Check")
+    print("=" * 50)
+    
+    try:
+        from utils import kawaii_health_check
+        
+        health = kawaii_health_check()
+        
+        print(f"\n📊 Health Status: {health['status'].upper()}")
+        print(f"💖 Kawaii Level: {health['kawaii_level']}")
+        
+        if health['checks']:
+            print("\n🔧 System Checks:")
+            for check, result in health['checks'].items():
+                status = "✅" if result else "❌"
+                print(f"  {status} {check.replace('_', ' ').title()}")
+        
+        if health['issues']:
+            print(f"\n❌ Issues Found ({len(health['issues'])}):")
+            for issue in health['issues']:
+                print(f"  • {issue}")
+        
+        if health['recommendations']:
+            print(f"\n💡 Recommendations:")
+            for rec in health['recommendations']:
+                print(f"  • {rec}")
+        
+        if health['status'] == 'healthy':
+            print("\n🎉 Your kawaii system is running perfectly! (òωó)")
+            logger.success("Health check passed", 'celebration')
+            return 0
+        else:
+            print(f"\n⚠️ Your kawaii system needs attention.")
+            logger.warning(f"Health check found issues", 'thinking')
+            return 1
+            
+    except Exception as e:
+        logger.error(f"Health check failed: {e}", 'error')
+        print(f"❌ Health check failed: {e}")
+        return 1
+
+
+def run_list_command(item_type: str):
+    """Run list command for different item types"""
+    logger.info(f"Listing {item_type}", 'cute')
+    
+    try:
+        if item_type == 'themes':
+            return list_themes()
+        elif item_type == 'modes':
+            return list_collaboration_modes()
+        elif item_type == 'templates':
+            return list_workflow_templates()
+        elif item_type == 'plugins':
+            return list_plugins()
+        elif item_type == 'sessions':
+            return list_sessions()
+        else:
+            print(f"❌ Unknown list type: {item_type}")
+            return 1
+            
+    except Exception as e:
+        logger.error(f"List command failed: {e}", 'error')
+        print(f"❌ List command failed: {e}")
+        return 1
+
+
+def list_themes():
+    """List available themes"""
+    print("\n🎨 Available Hello Kitty Themes:")
+    print("=" * 40)
+    
+    try:
+        theme_manager = KawaiiThemeManager()
+        themes = theme_manager.list_themes()
+        active_theme = theme_manager.get_active_theme()
+        
+        for theme in themes:
+            status = "👑" if theme.id == active_theme.id else "  "
+            print(f"{status} {theme.name}")
+            print(f"    {theme.description}")
+            print(f"    Type: {theme.theme_type.value.title()} | Rating: {theme.rating}/5.0")
+            print()
+        
+        return 0
+        
+    except Exception as e:
+        print(f"❌ Error listing themes: {e}")
+        return 1
+
+
+def list_collaboration_modes():
+    """List available collaboration modes"""
+    print("\n🤝 Available AI Collaboration Modes:")
+    print("=" * 45)
+    
+    try:
+        ai_modes = KawaiiAIModes()
+        modes = ai_modes.list_modes()
+        
+        for mode_value, kawaii_name, icon in modes:
+            print(f"{icon} {kawaii_name}")
+            config = ai_modes.get_mode_config(CollaborationMode(mode_value))
+            print(f"    {config.description}")
+            print(f"    Duration: {config.parameters.get('duration', 'N/A')}")
+            print()
+        
+        return 0
+        
+    except Exception as e:
+        print(f"❌ Error listing collaboration modes: {e}")
+        return 1
+
+
+def list_workflow_templates():
+    """List available workflow templates"""
+    print("\n🎭 Available Workflow Templates:")
+    print("=" * 40)
+    
+    try:
+        workflow_templates = KawaiiWorkflowTemplates()
+        templates = workflow_templates.list_templates()
+        
+        for template in templates:
+            print(f"🎭 {template.name}")
+            print(f"    {template.description}")
+            print(f"    Duration: {template.estimated_duration_hours}h | Agents: {template.required_agents}")
+            print(f"    Category: {template.category.title()} | Rating: {template.rating}/5.0")
+            print()
+        
+        return 0
+        
+    except Exception as e:
+        print(f"❌ Error listing workflow templates: {e}")
+        return 1
+
+
+def list_plugins():
+    """List available plugins"""
+    print("\n🔌 Available Kawaii Plugins:")
+    print("=" * 35)
+    
+    try:
+        plugin_manager = KawaiiPluginManager()
+        plugins = plugin_manager.list_plugins()
+        
+        for plugin, status in plugins:
+            status_icon = "✅" if status.value == "enabled" else "📦" if status.value == "installed" else "❌"
+            print(f"{status_icon} {plugin.name}")
+            print(f"    {plugin.description}")
+            print(f"    Category: {plugin.category.title()} | Rating: {plugin.rating}/5.0")
+            print()
+        
+        return 0
+        
+    except Exception as e:
+        print(f"❌ Error listing plugins: {e}")
+        return 1
+
+
+def list_sessions():
+    """List active sessions"""
+    print("\n🖥️ Active Kawaii Sessions:")
+    print("=" * 30)
+    
+    try:
+        session_manager = KawaiiSessionManager()
+        sessions = session_manager.list_sessions()
+        
+        if not sessions:
+            print("📭 No active sessions found")
+            return 0
+        
+        for session in sessions:
+            print(f"🖥️ {session.name}")
+            print(f"    Type: {session.session_type.value.title()}")
+            print(f"    Status: {session.status.value.title()}")
+            print(f"    Created: {session.created_at.strftime('%Y-%m-%d %H:%M')}")
+            print()
+        
+        return 0
+        
+    except Exception as e:
+        print(f"❌ Error listing sessions: {e}")
+        return 1
+
+
+def run_collaboration_mode(args):
+    """Run specific collaboration mode"""
+    mode_map = {
+        'pair': CollaborationMode.PAIR_PROGRAMMING,
+        'debate': CollaborationMode.DEBATE,
+        'teaching': CollaborationMode.TEACHING,
+        'consensus': CollaborationMode.CONSENSUS,
+        'competition': CollaborationMode.COMPETITION
+    }
+    
+    mode = mode_map[args.mode]
+    session_name = args.session or f"kawaii_{args.mode}_{int(__import__('time').time())}"
+    
+    logger.info(f"Starting collaboration mode: {args.mode}", 'excited')
+    print(f"\n🎀 Starting {args.mode} collaboration session...")
+    print(f"Session: {session_name}")
+    print(f"Agents: {args.agents}")
+    print(f"Duration: {args.duration} hours")
+    
+    try:
+        ai_modes = KawaiiAIModes()
+        session_manager = KawaiiSessionManager()
+        
+        # Create session
+        success = session_manager.create_session(
+            name=session_name,
+            session_type=SessionType.COLLABORATION
+        )
+        
+        if not success:
+            print("❌ Failed to create session")
+            return 1
+        
+        # Start collaboration mode
+        parameters = {
+            'agents': str(args.agents),
+            'duration': f"{args.duration} hours",
+            'focus': 'collaboration'
+        }
+        
+        success = ai_modes.create_collaboration_session(
+            mode=mode,
+            session_name=session_name,
+            parameters=parameters
+        )
+        
+        if success:
+            print(f"\n🎉 Collaboration session started successfully!")
+            print(f"💖 Kawaii level: MAXIMUM! (òωó)")
+            print(f"\n🚀 Quick commands:")
+            print(f"  Attach: tmux attach -t {session_name}")
+            print(f"  Detach: Ctrl+b then d")
+            logger.success(f"Collaboration session started: {session_name}", 'celebration')
+            return 0
+        else:
+            print("❌ Failed to start collaboration")
+            return 1
+            
+    except Exception as e:
+        logger.error(f"Failed to start collaboration: {e}", 'error')
+        print(f"❌ Error starting collaboration: {e}")
+        return 1
+
+
+def run_theme_command(args):
+    """Apply specific theme"""
+    logger.info(f"Applying theme: {args.theme}", 'cute')
+    print(f"\n🎨 Applying {args.theme} Hello Kitty theme...")
+    
+    try:
+        theme_manager = KawaiiThemeManager()
+        
+        theme_id = f"{args.theme}_hello_kitty" if args.theme != 'classic' else 'classic_hello_kitty'
+        
+        success = theme_manager.apply_theme(theme_id)
+        
+        if success:
+            theme = theme_manager.get_theme(theme_id)
+            print(f"\n✨ Theme applied successfully!")
+            print(f"🎨 Theme: {theme.name}")
+            print(f"💖 Kawaii level: {theme.kawaii_level}")
+            print(f"🎯 Type: {theme.theme_type.value.title()}")
+            logger.success(f"Theme applied: {args.theme}", 'success')
+            return 0
+        else:
+            print("❌ Failed to apply theme")
+            return 1
+            
+    except Exception as e:
+        logger.error(f"Failed to apply theme: {e}", 'error')
+        print(f"❌ Error applying theme: {e}")
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

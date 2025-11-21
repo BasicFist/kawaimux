@@ -1,0 +1,69 @@
+{
+  "version": "1.0.0",
+  "theme": {
+    "name": "classic_hello_kitty",
+    "kawaii_level": "MAXIMUM",
+    "animations": true,
+    "hello_kitty_elements": true
+  },
+  "ui": {
+    "font_size": 12,
+    "color_mode": "dark",
+    "show_ascii_art": true,
+    "kawaii_messages": true,
+    "terminal_emulation": "xterm-256color"
+  },
+  "collaboration": {
+    "default_agents": 2,
+    "default_duration_hours": 2,
+    "auto_save_sessions": true,
+    "kawaii_notifications": true,
+    "default_mode": "pair_programming",
+    "auto_apply_theme": true
+  },
+  "ai_integration": {
+    "enabled": true,
+    "default_provider": "openai",
+    "api_timeout": 30,
+    "retry_attempts": 3,
+    "log_interactions": true
+  },
+  "session_management": {
+    "auto_backup": true,
+    "backup_interval_hours": 24,
+    "max_backup_files": 10,
+    "auto_cleanup_days": 30,
+    "kawaii_session_naming": true
+  },
+  "system": {
+    "auto_backup": true,
+    "debug_mode": false,
+    "log_level": "INFO",
+    "check_updates": true,
+    "performance_monitoring": true
+  },
+  "paths": {
+    "sessions": "~/.kawaii_sessions",
+    "snapshots": "~/.kawaii_snapshots", 
+    "templates": "~/.kawaii_templates",
+    "plugins": "~/.kawaii_plugins",
+    "knowledge": "~/.kawaii_knowledge",
+    "logs": "~/.kawaii_logs",
+    "cache": "~/.kawaii_cache"
+  },
+  "advanced": {
+    "tmux_version_minimum": "2.9",
+    "python_version_minimum": "3.7",
+    "memory_limit_mb": 512,
+    "concurrent_sessions_limit": 5,
+    "plugin_auto_update": false,
+    "theme_sync_with_system": false
+  },
+  "kawaii_settings": {
+    "emoji_style": "hello_kitty",
+    "ascii_art_level": "maximum",
+    "kawaii_encouragement": true,
+    "cuteness_overload": true,
+    "hello_kitty_banner": true
+  }
+}
