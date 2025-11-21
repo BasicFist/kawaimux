@@ -325,7 +325,7 @@ def check_system_compatibility() -> Dict[str, bool]:
     
     try:
         # Check tmux
-        result = subprocess.run(['tmux', '--version'], 
+        result = subprocess.run(['tmux', '-V'], 
                               capture_output=True, text=True)
         checks['tmux_installed'] = result.returncode == 0
     except (FileNotFoundError, subprocess.CalledProcessError):

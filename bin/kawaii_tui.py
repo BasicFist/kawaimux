@@ -745,8 +745,8 @@ def check_dependencies() -> bool:
         import npyscreen
         import subprocess
         
-        # Check tmux
-        subprocess.run(['tmux', '--version'], capture_output=True, check=True)
+        # Check tmux (use -V for compatibility)
+        subprocess.run(['tmux', '-V'], capture_output=True, check=True)
         
         return True
     except (ImportError, subprocess.CalledProcessError, FileNotFoundError):
