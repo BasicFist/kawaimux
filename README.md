@@ -11,9 +11,10 @@ Welcome to the most adorable and functional TUI for managing AI collaboration se
 ### 🎭 Enhanced AI Collaboration Modes
 - **👩‍💻 Pair Programming**: Code together with AI besties
 - **🎭 Debate Mode**: Intellectual sparring with style  
-- **👩‍🏫 Teaching Mode**: Share knowledge with cuteness
+- **🚨 Ops Incident Drill**: Simulate incidents end-to-end
+- **📚 Academic Writing Sprint**: Draft rigorous, cited sections
+- **🌸 Brainstorm Bloom**: Diverge/converge ideation with kawaii flair
 - **🤝 Consensus Mode**: Build agreements with harmony
-- **🏆 Competition Mode**: Friendly challenges galore
 
 ### 🖥️ Session Management TUI
 - Hello Kitty themed session interface
