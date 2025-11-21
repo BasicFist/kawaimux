@@ -530,24 +530,37 @@ class KawaiiThemeSettings(npyscreen.FormBaseNew):
 
     def apply_theme(self):
         """Apply the selected theme"""
-        theme = self.theme_selector.value
-        themes = [
-            "Classic Hello Kitty",
-            "Pastel Dreams", 
-            "Starry Night",
-            "Rainbow Kitty",
-            "Minimal Pink",
-            "Neon Glow"
+        theme_index = self.theme_selector.value
+        theme_ids = [
+            "classic_hello_kitty",
+            "pastel_dreams", 
+            "starry_night",
+            "rainbow_kitty",
+            "minimal_pink",
+            "neon_glow"
         ]
-        
-        npyscreen.notify_confirm(
-            f"🎨 Theme Applied!\n\n"
-            f"✨ {themes[theme]} is now active\n\n"
-            f"🎀 Your TUI now radiates with kawaii beauty!\n"
-            f"All interfaces will use the new theme\n\n"
-            f"Perfect styling for your collaboration sessions! (òωó)",
-            title="Theme Applied Successfully!"
-        )
+        try:
+            theme_id = theme_ids[theme_index]
+            from lib.theme import KawaiiThemeManager
+            tm = KawaiiThemeManager()
+            if tm.apply_theme(theme_id):
+                npyscreen.notify_confirm(
+                    f"🎨 Theme Applied!\n\n✨ {theme_id} is now active\n\n"
+                    f"🎀 Your TUI now radiates with kawaii beauty!\n"
+                    f"All interfaces will use the new theme\n\n"
+                    f"Perfect styling for your collaboration sessions! (òωó)",
+                    title="Theme Applied Successfully!"
+                )
+            else:
+                npyscreen.notify_confirm(
+                    "⚠️ Theme not found in manager.",
+                    title="Theme Error"
+                )
+        except Exception as e:
+            npyscreen.notify_confirm(
+                f"⚠️ Error applying theme: {e}",
+                title="Theme Error"
+            )
 
     def customize_colors(self):
         """Customize color scheme"""
@@ -672,7 +685,13 @@ class KawaiiTUIApp(NPSApp):
     
     def __init__(self):
         super().__init__()
-        self.theme = KawaiiTheme()
+        # Theme management
+        from lib.theme import KawaiiThemeManager
+        self.theme_manager = KawaiiThemeManager()
+        active = self.theme_manager.get_active_theme() or next(iter(self.theme_manager.themes.values()))
+        self.active_theme_id = active.id if active else None
+
+        # Core modules
         self.ai_modes = KawaiiAIModes()
         self.session_manager = KawaiiSessionManager()
         self.knowledge_base = KawaiiKnowledgeBase()
@@ -692,7 +711,8 @@ class KawaiiTUIApp(NPSApp):
         self.addForm('SYSTEM_STATUS', KawaiiSystemStatus, name="📊 System Status")
         
         # Apply kawaii theme
-        self.theme.apply_theme()
+        if self.active_theme_id:
+            self.theme_manager.apply_theme(self.active_theme_id)
         
         # Print kawaii welcome message
         self.print_welcome()
